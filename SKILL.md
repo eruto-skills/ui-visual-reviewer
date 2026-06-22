@@ -234,14 +234,42 @@ function matchToken(rgb, scheme) {
 4. **SVG 塗り色** — `fill` 属性はCSSの `color` / `backgroundColor` ではないため取得不可
 5. **Pseudo-elements** — `::before` / `::after` の色は `getComputedStyle(el, '::before')` で別途取得が必要
 
+## ダイアログ状態のスクリーンショット
+
+通常の監査スクリプトはメイン画面を撮るため、モーダル内の要素が監査から漏れる。
+Puppeteer でダイアログをプログラムから開き、専用スクリプトでスクショを撮ること。
+
+```javascript
+// ダイアログを開いた状態でスクリーンショットを撮るパターン
+// 1. アプリセットアップ（IndexedDB seeding、プロファイル・メンバー作成）
+// 2. div[role="button"] を getBoundingClientRect() で座標取得 → page.mouse.click()
+//    ※ React の合成イベントは page.evaluate() 内の .click() より page.mouse.click() が確実
+// 3. dialog が開いたことを確認 → page.$('[role="dialog"]')
+// 4. スクリーンショット撮影
+
+const cellInfo = await page.evaluate(() => {
+  const cell = document.querySelector('[role="button"]');
+  if (!cell) return null;
+  const r = cell.getBoundingClientRect();
+  return { x: r.x + r.width / 2, y: r.y + r.height / 2 };
+});
+if (cellInfo) await page.mouse.click(cellInfo.x, cellInfo.y);
+await sleep(800);
+const dialogOpen = await page.$('[role="dialog"]');
+await page.screenshot({ path: 'screenshots/dialog-dark.png' });
+```
+
+countstack 向け: `scripts/screenshot-dialog.cjs` を参照。
+
 ## countstackでの実績（参考）
 
-- 検証日: 2026-06-15
-- スクリプト: `c:\@projects\countstack\scripts\visual-audit.cjs`
-- 主な発見:
+- 検証日: 2026-06-15〜16
+- スクリプト: `c:\@projects\countstack\scripts\visual-audit.cjs`、`screenshot-dialog.cjs`
+- 主な発見と対応:
   - counterNormal (`#E3E2E6`) on surfaceHigh (`#262830`) = **11.4:1 ✓** （ad-hocレビューでの指摘①は誤りだった）
-  - モーダル「直接入力」ラベル (`textDisabled #74777f`) on surfaceMid (`#1B1D24`) = **3.76:1 ✗** (WCAG AA未達)
-  - 「メンバー追加」ボタン = 偽陽性の疑い（プレス状態オーバーレイ）→ 要手動確認
+  - `CounterActionDialog` dividerLabel「直接入力」: `textDisabled #74777f` on `surfaceMid #1B1D24` = **3.76:1 ✗** → `textSecondary` に修正、**~10:1 ✓**（2026-06-16）
+  - `CounterActionDialog` 増分ボタン文字色: `colors.primary`（青 `#AAC7FF`）on 緑背景 → 色のセマンティクス不一致 → `colors.success`（緑）に修正（2026-06-16）
+  - 「メンバー追加」ボタン = 偽陽性（プレス状態オーバーレイ）→ 目視確認済み、実際は読める
 
 ## Cross-Skill Integration
 

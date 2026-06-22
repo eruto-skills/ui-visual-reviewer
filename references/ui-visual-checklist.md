@@ -44,8 +44,14 @@
 
 ## モーダル・ドロワー状態
 
-- [ ] モーダル内のラベル（placeholder, hint text等）のコントラストを確認
-- [ ] 例: 「直接入力」ラベル (`textDisabled`) on `surfaceMid` → 3.76:1（AA未達の実例）
+- [ ] モーダルはデフォルト状態だけでなく、**ダイアログを開いた状態**でスクリーンショットを撮って確認する
+  - 通常の監査スクリプトはモーダルが閉じた状態を撮る → ダイアログ内の要素が監査から漏れる
+  - Puppeteer でダイアログをプログラムから開いてスクショを取ること
+- [ ] モーダル内のセクション見出し・ラベルが `textDisabled` を誤用していないか
+  - アクティブな入力欄の見出しに `textDisabled` を使うのは意味的に誤り → `textSecondary` 以上を使う
+  - 例: countstack `CounterActionDialog` dividerLabel（「直接入力」）→ `textDisabled` 3.76:1 → `textSecondary` ~10:1 に修正済み（2026-06-16）
+- [ ] ボタンの文字色がセマンティクスと一致しているか（緑背景に青テキストなど色の不一致を確認）
+  - 例: countstack 増分ボタン → `colors.primary`（青）→ `colors.success`（緑）に修正済み（2026-06-16）
 
 ## 目視確認が必要なケース
 

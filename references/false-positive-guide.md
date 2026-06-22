@@ -37,8 +37,8 @@
 **判断**: disabled であることが明確なら、ユーザービリティの観点でも問題なければ容認。
 ただし「disabled なのに読めない」は UX問題として記録する価値がある。
 
-**countstack の例**: 「直接入力」ラベル 3.76:1 → モーダルのプレースホルダーラベルで disabled 扱い。
-実際には thin/small テキストで読みにくい可能性があり、要検討。
+**countstack の例（修正済み）**: 「直接入力」ラベル → `CounterActionDialog` の `dividerLabel` が `textDisabled (#74777F)` を使用。
+アクティブな入力欄のセクション見出しであり disabled 扱いは誤りだった。`textSecondary (#C4C6CF)` に修正、3.76:1 → ~10:1。
 
 ## 4. SVG fill / stroke
 
