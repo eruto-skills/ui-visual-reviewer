@@ -264,7 +264,7 @@ countstack 向け: `scripts/screenshot-dialog.cjs` を参照。
 ## countstackでの実績（参考）
 
 - 検証日: 2026-06-15〜16
-- スクリプト: `c:\@projects\countstack\scripts\visual-audit.cjs`、`screenshot-dialog.cjs`
+- スクリプト: 検証対象アプリ側の `scripts/visual-audit.cjs`、`screenshot-dialog.cjs`（作者のプライベートリポジトリ内の補助スクリプト）
 - 主な発見と対応:
   - counterNormal (`#E3E2E6`) on surfaceHigh (`#262830`) = **11.4:1 ✓** （ad-hocレビューでの指摘①は誤りだった）
   - `CounterActionDialog` dividerLabel「直接入力」: `textDisabled #74777f` on `surfaceMid #1B1D24` = **3.76:1 ✗** → `textSecondary` に修正、**~10:1 ✓**（2026-06-16）

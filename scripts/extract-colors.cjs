@@ -17,7 +17,21 @@
 
 const path = require('path');
 const fs = require('fs');
-const puppeteer = require('C:/@projects/eruto-skills/research-note/node_modules/puppeteer-core');
+// puppeteer-core は通常解決を優先し、作者環境の同居スキル配下をフォールバックにする
+const puppeteer = (() => {
+  const candidates = [
+    'puppeteer-core',
+    'C:/@projects/eruto-skills/research-note/node_modules/puppeteer-core',
+  ];
+  for (const c of candidates) {
+    try {
+      return require(c);
+    } catch (_) {
+      /* try next */
+    }
+  }
+  throw new Error('puppeteer-core が見つからない。npm install puppeteer-core を実行するか、解決可能なパスを candidates に追加する');
+})();
 
 // ─── Chrome detection ───
 function findChrome() {
