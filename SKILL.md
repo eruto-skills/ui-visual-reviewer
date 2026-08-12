@@ -259,7 +259,7 @@ const dialogOpen = await page.$('[role="dialog"]');
 await page.screenshot({ path: 'screenshots/dialog-dark.png' });
 ```
 
-countstack 向け: `scripts/screenshot-dialog.cjs` を参照。
+⚠ 作者環境では countstack 側の `scripts/screenshot-dialog.cjs` がこれを実装しているが、**そのリポジトリは非公開なので他環境からは参照できない**。上のコードを自分のダイアログ構造に合わせて書く。
 
 ## countstackでの実績（参考）
 
@@ -273,6 +273,12 @@ countstack 向け: `scripts/screenshot-dialog.cjs` を参照。
 
 ## Cross-Skill Integration
 
-- **← countstack `/audit-gap`**: 実装ギャップ検出の後、色の実描画確認にこのスキルを使う
-- **← countstack `ux-audit` agent**: UX監査のカラー検証フェーズで呼び出す
 - **→ slide-visual-reviewer**: スライドのPNG目視確認はこちら（UIアプリとは別スキル）
+
+### 呼び出し元の組み方（作者環境の例）
+
+⚠ **以下は作者の非公開プロジェクトにしか無いコマンド／エージェント。そのまま実行できるものではない。**
+「利用側プロジェクトの入口の途中からこのスキルを呼ぶ」という**形の例**として読む。
+
+- countstack の `/audit-gap`（実装ギャップ検出）の後段で、色の実描画確認としてこのスキルを使う
+- countstack の `ux-audit` エージェントのカラー検証の段でこのスキルを呼ぶ
