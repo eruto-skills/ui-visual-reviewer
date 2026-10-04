@@ -1,4 +1,5 @@
 {
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "ui-visual-reviewer",
   "description": "Audit a web app's rendered UI colors using getComputedStyle. Calculates WCAG contrast ratios and validates against design tokens — captures opacity-stacked and CSS-variable-resolved colors that screenshot review misses.",
   "version": "1.1.0",
@@ -17,6 +18,5 @@
     "accessibility",
     "color-contrast",
     "design-tokens"
-  ],
-  "skills": "./skills/"
+  ]
 }
